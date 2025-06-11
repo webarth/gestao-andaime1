@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - GTA System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    /* Estilo do submenu */
+    .submenu {
+      display: none;
+      flex-direction: column;
+      background-color: #111827; /* bg-gray-900 do Tailwind */
+      margin-left: 1.5rem; /* indentação */
+      border-radius: 0.375rem; /* rounded-md */
+      padding: 0.5rem 0;
+      position: absolute;
+      z-index: 50;
+      min-width: 140px;
+    }
+    nav a.group:hover > .submenu {
+      display: flex;
+    }
+    /* Ajuste para o container do menu com posição relativa */
+    nav a.group {
+      position: relative;
+    }
+    /* Estilo dos links do submenu */
+    .submenu a {
+      padding: 0.5rem 1rem;
+      color: #d1d5db; /* text-gray-300 */
+      text-decoration: none;
+      font-size: 0.875rem; /* text-sm */
+    }
+    .submenu a:hover {
+      background-color: #374151; /* bg-gray-700 */
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-white text-black min-h-screen">
+
+  <!-- POP-UP de sucesso -->
+  {% if session.get('success_message') %}
+  <div id="successPopup" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg transition-opacity duration-500 opacity-100 fade-in">
+    {{ session.pop('success_message') }}
+  </div>
+  {% endif %}
+
+  <!-- Container -->
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-black text-white flex flex-col p-6">
+      <h1 class="text-2xl font-bold mb-10">Bem Vindo(a) a GTA System</h1>
+      <nav class="flex flex-col gap-4">
+        <a href="{{ url_for('dashboard') }}" class="flex items-center gap-3 text-gray-200 hover:text-white">
+          <i class="ph ph-house-simple text-xl"></i>
+          <span>Início</span>
+        </a>
+        <a href="{{ url_for('clientes') }}" class="flex items-center gap-3 text-gray-200 hover:text-white">
+          <i class="ph ph-user text-xl"></i>
+          <span>Clientes</span>
+        </a>
+
+
+        <!-- Menu Andaimes com submenu -->
+<div class="relative group flex items-center gap-3 cursor-pointer text-gray-200 hover:text-white">
+  <a href="#" class="flex items-center gap-3">
+    <i class="ph ph-buildings text-xl"></i>
+    <span>Andaimes</span>
+  </a>
+
+  <!-- Submenu -->
+  <div class="absolute top-0 left-full ml-1 w-40 bg-black rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 flex flex-col">
+  <a href="{{ url_for('montagem') }}" class="px-4 py-2 hover:bg-gray-700">Montagem</a>
+  <a href="{{ url_for('desmontagem') }}" class="px-4 py-2 hover:bg-gray-700">Desmontagem</a>
+</div>
+
+</div>
+
+
+        <a href="{{ url_for('relatorios') }}" class="flex items-center gap-3 text-gray-200 hover:text-white">
+          <i class="ph ph-buildings text-xl"></i>
+          <span>Relatórios</span>
+        </a>
+        <a href="{{ url_for('suporte') }}" class="flex items-center gap-3 text-gray-200 hover:text-white">
+          <i class="ph ph-gear text-xl"></i>
+          <span>Suporte</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="flex-1 p-10 bg-white">
+      <h2 class="text-3xl font-semibold mb-8">Resumo Geral</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-gray-100 p-6 rounded-xl shadow-sm card-hover fade-in">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Total clientes</h3>
+            <i class="ph ph-cube text-2xl text-black"></i>
+          </div>
+          <p class="text-3xl font-bold">{{ total_clientes }}</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-gray-100 p-6 rounded-xl shadow-sm card-hover fade-in">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Estoque total material</h3>
+            <i class="ph ph-truck text-2xl text-black"></i>
+          </div>
+          <p class="text-1xl font-bold">Tubo: 23 tamanhos</p>
+		  <p class="text-1xl font-bold">Pranchões: 13 tamanhos</p>
+        </div>
+
+       <!-- Card 3 -->
+<div class="bg-gray-100 p-6 rounded-xl shadow-sm card-hover fade-in">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold">Andaimes montados</h3>
+    <i class="ph ph-check-circle text-2xl text-black"></i>
+  </div>
+  <p class="text-3xl font-bold">{{ total_andaimes }}</p>
+
+</div>
+
+
+      <!-- Seção extra (opcional) -->
+      <div class="mt-12">
+        <h3 class="text-2xl font-semibold mb-4">Não funciona</h3>
+        <ul class="space-y-3">
+          <li class="bg-gray-50 p-4 rounded-lg shadow-sm flex justify-between items-center">
+            <span>Este local em específico ainda está sem funcionalidade</span>
+            <span class="text-sm text-gray-500">09/06/2025 ARTHUR FRANÇA</span>
+          </li>
+          <li class="bg-gray-50 p-4 rounded-lg shadow-sm flex justify-between items-center">
+            <span>Este local em específico ainda está sem funcionalidade</span>
+            <span class="text-sm text-gray-500">09/06/2025 ARTHUR FRANÇA</span>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </div>
+  
+{% if sucesso %}
+<script>
+  Swal.fire({
+    icon: 'success',
+    title: 'Montagem registrada com sucesso!',
+    showConfirmButton: false,
+    timer: 2000
+  }).then(() => {
+    window.location.href = "/dashboard";
+  });
+</script>
+{% endif %}
+
+
+</body>
+</html>

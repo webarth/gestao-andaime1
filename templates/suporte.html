@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Já ta com dúvida? Humm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f8;
+            padding: 30px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        form label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #2980b9;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #1f6391;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Suporte Técnico</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="success">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('suporte') }}">
+            <label for="nome">Seu nome</label>
+            <input type="text" name="nome" id="nome" required>
+
+            <label for="setor">Setor</label>
+            <input type="text" name="setor" id="setor" required>
+
+            <label for="duvida">Descreva sua dúvida</label>
+            <textarea name="duvida" id="duvida" rows="5" required></textarea>
+
+            <button type="submit">Enviar para o Suporte</button>
+        </form>
+    </div>
+</body>
+</html>

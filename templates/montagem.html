@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<title>Registrar Montagem - GTA System</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    color: #000;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0 20px 40px;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 25px;
+  }
+
+  label, select, input {
+    display: block;
+    width: 100%;
+  }
+
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  select, input[type="date"], input[type="number"] {
+    padding: 8px 10px;
+    font-size: 1rem;
+    border: 1.5px solid #000;
+    border-radius: 6px;
+    background: #fff;
+    color: #000;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+  }
+
+  select:focus, input:focus {
+    outline: none;
+    border-color: #555;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background: #000;
+    color: #fff;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background: #333;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+  }
+
+  .tab-button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 0;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: #000;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+
+  .tab-button.active {
+    border-bottom-color: #000;
+    color: #000;
+  }
+
+  .tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  .item-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .item-row label {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .item-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  .item-row input[type="number"] {
+    width: 70px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #000;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 400px) {
+    .item-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .item-row input[type="number"] {
+      width: 100%;
+      margin-top: 5px;
+    }
+  }
+</style>
+</head>
+<body>
+<h1>Registro de montagem</h1>
+<h5>Registre os materiais da montagem</h5>
+
+<form method="POST" action="{{ url_for('montagem') }}">
+
+  <label for="cliente">Cliente:</label>
+  <select name="cliente" id="cliente" required>
+    <option value="" disabled selected>Selecione um cliente</option>
+    {% for cliente in clientes %}
+      <option value="{{ cliente }}">{{ cliente }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="obra">Obra:</label>
+  <input type="text" name="obra" id="obra" placeholder="Digite o nome da obra" required>
+
+  <label for="local">Local:</label>
+  <input type="text" name="local" id="local" placeholder="Digite o local da montagem" required>
+
+  <label for="data">Data:</label>
+  <input type="date" name="data" id="data" required>
+
+  <!-- Novo campo: Responsável -->
+  <label for="responsavel">Responsável:</label>
+  <input type="text" name="responsavel" id="responsavel" placeholder="Digite o nome do responsável" required>
+
+
+
+  <div class="tabs" role="tablist" aria-label="Categorias de Materiais">
+    <button type="button" class="tab-button active" aria-selected="true" aria-controls="tab-tubos" id="tab-btn-tubos">Tubo Roll</button>
+    <button type="button" class="tab-button" aria-selected="false" aria-controls="tab-pranchoes" id="tab-btn-pranchoes">Pranchões</button>
+    <button type="button" class="tab-button" aria-selected="false" aria-controls="tab-acessorios" id="tab-btn-acessorios">Acessórios</button>
+	<button type="button" class="tab-button" aria-selected="false" aria-controls="tab-rodape" id="tab-btn-rodape">Rodapé</button>
+	<button type="button" class="tab-button" aria-selected="false" aria-controls="tab-diversos" id="tab-btn-diversos">Diversos</button>
+  </div>
+diversos
+  <!-- Tubos Galvanizados -->
+  <section id="tab-tubos" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-tubos">
+    <div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-1" value="Tubo 0.50m - 1.82kg" />
+        <label for="tubo-1">Tubo 0.50m - 1.82kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-2" value="Tubo 0.75m - 2.74kg" />
+        <label for="tubo-2">Tubo 0.75m - 2.74kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 1.00m - 3.64kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 1.25m - 4.58kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-4" value="Tubo 1.50m - 5.46kg" />
+        <label for="tubo-4">Tubo 1.50m - 5.46kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 1.75m - 6.39kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-5" value="Tubo 2.00m - 7.28kg" />
+        <label for="tubo-5">Tubo 2.00m - 7.28kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 2.25m - 8.21kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 2.50m - 9.13kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-3" value="Tubo 1.00m - 3.64kg" />
+        <label for="tubo-3">Tubo 2.75m - 10.04kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 3.00m - 10.92kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 3.25m - 11.86kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 3.50m - 12.78kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 3.75m - 13.69kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 4.00m - 14.60kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 4.25m - 15.51kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 4.50m - 16.43kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 4.75m - 17.34kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 5.00m - 18.25kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 5.25m - 19.10kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 5.50m - 20.08kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 5.75m - 20.99kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="tubos[]" id="tubo-6" value="Tubo 3.00m - 10.92kg" />
+        <label for="tubo-6">Tubo 6.00m - 21.90kg</label>
+        <input type="number" name="quantidade_tubos[]" min="0" placeholder="Qtd" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pranchões -->
+  <section id="tab-pranchoes" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-pranchoes">
+    <div>
+      <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-1" value="Pranchão 0.75m - 8.25kg" />
+        <label for="prancho-1">Pranchão 0.75m - 8.25kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 1.00m - 11.00kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 1.50m - 16.50kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 1.75m - 19.25kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 2.00m - 22.00g</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 2.25m - 24.75kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 2.50m - 27.50kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 2.75m - 30.25kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 3.00m - 33.00kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 3.25m - 35.75kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 3.50m - 38.50kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 3.75m - 41.25kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="pranchoes[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Pranchão 4.00m - 44.00kg</label>
+        <input type="number" name="quantidade_pranchoes[]" min="0" placeholder="Qtd" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Acessórios-->
+  
+  <section id="tab-acessorios" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-acessorios">
+    <div>
+      <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-1" value="acessorios 0.75m - 8.25kg" />
+        <label for="prancho-1">Braçadeira FIXA - 1,24kg</label>
+        <input type="number" name="quantidade_acessorios[]" min="0" placeholder="Qtd" />
+      </div>
+      <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="acessorios 1.00m - 11.00kg" />
+        <label for="prancho-2">Braçadeira GIRATÓRIA - 1,24kg</label>
+        <input type="number" name="quantidade_acessorios[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="acessorios 1.00m - 11.00kg" />
+        <label for="prancho-2">Luva de união - 1,32kg</label>
+        <input type="number" name="quantidade_acessorios min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="acessorios 1.00m - 11.00kg" />
+        <label for="prancho-2">Sapata FIXA - 1,00kg</label>
+        <input type="number" name="quantidade_acessorios]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="acessorios 1.00m - 11.00kg" />
+        <label for="prancho-2">Sapata AJUSTÁVEL - 4,00kg</label>
+        <input type="number" name="quantidade_acessorios]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="acessorios 1.00m - 11.00kg" />
+        <label for="prancho-2">Arco ABERTO - 4,50kg</label>
+        <input type="number" name="quantidade_acessorios]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="acessorios[]" id="prancho-2" value="Pranchão 1.00m - 11.00kg" />
+        <label for="prancho-2">Arco FECHADO - 4,65kg</label>
+        <input type="number" name="quantidade_acessorios[]" min="0" placeholder="Qtd" />
+      </div>
+    </div>
+  </section>
+	
+	<!-- rodape-->
+  <section id="tab-rodape" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-rodape">
+    <div>
+      <div class="item-row">
+        <input type="checkbox" name="rodape[]" id="rodape-1" value="rodape 0.50m - 1.82kg" />
+        <label for="tubo-1">Rodapé 1,00m - 3,00kg</label>
+        <input type="number" name="quantidade_rodape[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="rodape[]" id="rodape-1" value="rodape 0.50m - 1.82kg" />
+        <label for="tubo-1">Rodapé 1,50m - 4,50kg</label>
+        <input type="number" name="quantidade_rodape[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="rodape[]" id="rodape-1" value="rodape 0.50m - 1.82kg" />
+        <label for="tubo-1">Rodapé 2,00m - 6,00kg</label>
+        <input type="number" name="quantidade_rodape[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="rodape[]" id="rodape-1" value="rodape 0.50m - 1.82kg" />
+        <label for="tubo-1">Rodapé 2,50m - 7,50kg</label>
+        <input type="number" name="quantidade_rodape[]" min="0" placeholder="Qtd" />
+      </div>
+	  <div class="item-row">
+        <input type="checkbox" name="rodape[]" id="rodape-1" value="rodape 0.50m - 1.82kg" />
+        <label for="tubo-1">Rodapé 3,00m - 9,00kg</label>
+        <input type="number" name="quantidade_rodape[]" min="0" placeholder="Qtd" />
+      </div>
+  </section>
+  
+  <label for="diversos">Diversos</label>
+<textarea name="diversos" id="diversos" rows="3" placeholder="Descreva itens diversos..."></textarea>
+
+
+  <button type="submit">Registrar</button>
+
+</form>
+
+<script>
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(content => content.classList.remove('active'));
+
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      const tabId = button.getAttribute('aria-controls');
+      document.getElementById(tabId).classList.add('active');
+    });
+  });
+</script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso!',
+          text: '{{ messages[0] }}',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "{{ url_for('dashboard') }}";
+          }
+        });
+      {% endif %}
+    {% endwith %}
+  });
+</script>
+
+
+
+</body>
+</html>

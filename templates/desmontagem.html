@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestão de Andaimes Montados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-6">Gestão de Andaimes Montados</h1>
+
+  {% if andaimes %}
+    {% for andaime in andaimes %}
+    <div class="bg-white shadow rounded p-4 mb-4">
+      <h2 class="font-bold text-lg">{{ andaime.cliente }} - {{ andaime.obra }}</h2>
+      <p><strong>Local:</strong> {{ andaime.local }}</p>
+      <p><strong>Data:</strong> {{ andaime.data }}</p>
+      <button onclick="abrirModal({{ andaime.id }})" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded">
+        Gerenciar
+      </button>
+	  <a href="{{ url_for('dashboard') }}" class="btn">Voltar para o Dashboard</a>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-{{ andaime.id }}" class="fixed inset-0 hidden bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
+        <h3 class="text-xl font-semibold mb-4">Detalhes da Montagem</h3>
+        <p><strong>Cliente:</strong> {{ andaime.cliente }}</p>
+        <p><strong>Obra:</strong> {{ andaime.obra }}</p>
+        <p><strong>Local:</strong> {{ andaime.local }}</p>
+        <p><strong>Data:</strong> {{ andaime.data }}</p>
+        <p class="whitespace-pre-line"><strong>Materiais:</strong>{{ andaime.materiais }}</p>
+
+        <form method="POST" action="{{ url_for('atualizar_status') }}" class="mt-4">
+          <input type="hidden" name="id" value="{{ andaime.id }}">
+          <label for="status">Novo Status:</label>
+          <select name="status" class="border rounded px-2 py-1 w-full my-2" required>
+            <option value="Disponível">Disponível</option>
+            <option value="Desmontado">Desmontado</option>
+            <option value="Manutenção">Manutenção</option>
+          </select>
+          <div class="flex gap-2 justify-end">
+            <button type="button" onclick="fecharModal({{ andaime.id }})" class="px-4 py-2 bg-gray-400 text-white rounded">Cancelar</button>
+            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Salvar</button>
+			<a href="{{ url_for('dashboard') }}" class="btn">Voltar para o Dashboard</a>
+
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-gray-600">Nenhum andaime disponível no momento.</p>
+  {% endif %}
+
+  <script>
+    function abrirModal(id) {
+      document.getElementById('modal-' + id).classList.remove('hidden');
+    }
+    function fecharModal(id) {
+      document.getElementById('modal-' + id).classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
+

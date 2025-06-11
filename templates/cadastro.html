@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro - GTA System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url('https://img.freepik.com/premium-vector/background-night-mountains-whimsical-cartoon-illustration-night-mountains_198565-8267.jpg') no-repeat center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      width: 350px;
+      color: #fff;
+    }
+
+    .mascot {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+    }
+
+    .head {
+      width: 60px;
+      height: 60px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 20px;
+    }
+
+    .eye {
+      width: 8px;
+      height: 8px;
+      background: #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+    }
+
+    .eye.left { left: 15px; }
+    .eye.right { right: 15px; }
+
+    .body {
+      width: 40px;
+      height: 60px;
+      background: #fff;
+      border-radius: 20px;
+      position: absolute;
+      top: 60px;
+      left: 30px;
+    }
+
+    .arm {
+      width: 10px;
+      height: 40px;
+      background: #fff;
+      border-radius: 5px;
+      position: absolute;
+      top: 60px;
+      transform-origin: top center;
+    }
+
+    .arm.left {
+      left: 10px;
+      animation: wave 2s infinite;
+    }
+
+    .arm.right { right: 10px; }
+
+    @keyframes wave {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-20deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(20deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+
+    .inputbox {
+      position: relative;
+      margin-bottom: 25px;
+      width: 100%;
+      border-bottom: 2px solid wheat;
+    }
+
+    .inputbox input,
+    .inputbox select {
+      width: 100%;
+      height: 40px;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      padding-left: 5px;
+      font-size: 14px;
+    }
+
+    .inputbox label {
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      transition: 0.3s;
+      color: wheat;
+    }
+
+    .inputbox input:focus ~ label,
+    .inputbox input:valid ~ label,
+    .inputbox select:focus ~ label,
+    .inputbox select:valid ~ label {
+      top: -8px;
+      font-size: 12px;
+      color: deepskyblue;
+    }
+
+    .inputbox ion-icon {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 18px;
+      color: wheat;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: orangered;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .login-button:hover {
+      background: #e64a19;
+    }
+
+    .register {
+      margin-top: 20px;
+      font-size: 13px;
+    }
+
+    .register a {
+      color: deepskyblue;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .register a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="mascot">
+      <div class="head">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+      </div>
+      <div class="body"></div>
+      <div class="arm left"></div>
+      <div class="arm right"></div>
+    </div>
+    <h2>Cadastro - GTA System</h2>
+    <div class="description">Se cadastra aí meu consagrado</div>
+
+    <!-- Mensagem de erro -->
+    {% if erro %}
+      <div class="description" style="color: red;">{{ erro }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('cadastro') }}">
+      <div class="inputbox">
+        <ion-icon name="person-outline"></ion-icon>
+        <input type="text" name="nome" required />
+        <label for="nome">Seu nome meu patrão</label>
+      </div>
+      <div class="inputbox">
+        <ion-icon name="mail-outline"></ion-icon>
+        <input type="email" name="email" required />
+        <label for="email">Qualquer e-mail meu nobre</label>
+      </div>
+      <div class="inputbox">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <input type="password" name="senha" required />
+        <label for="senha">Coloca uma senha fácil plmds</label>
+      </div>
+      <div class="inputbox">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <input type="password" name="confirmarSenha" required />
+        <label for="confirmarSenha">Repete a senha pai</label>
+      </div>
+      <button type="submit" class="login-button">Agora vai kkk</button>
+    </form>
+
+    <div class="register">
+      <p>Já tem uma conta? ta fazendo o que aqui? <a href="{{ url_for('login') }}">Clica aqui e faz teu login</a></p>
+    </div>
+  </div>
+</body>
+</html>

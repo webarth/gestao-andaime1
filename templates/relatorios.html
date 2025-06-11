@@ -1,0 +1,67 @@
+<!-- templates/relatorios.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Relatórios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-white text-black min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 h-screen bg-black text-white flex flex-col p-6">
+    <h1 class="text-2xl font-bold mb-10">GTA System</h1>
+    <nav class="flex flex-col gap-4">
+      <a href="{{ url_for('dashboard') }}" class="flex items-center gap-3 text-gray-300 hover:text-white">
+        <i class="ph ph-house-simple text-xl"></i>
+        <span>Início</span>
+      </a>
+      <a href="{{ url_for('clientes') }}" class="flex items-center gap-3 text-gray-300 hover:text-white">
+        <i class="ph ph-user text-xl"></i>
+        <span>Clientes</span>
+      </a>
+      <a href="{{ url_for('relatorios') }}" class="flex items-center gap-3 text-white font-semibold">
+        <i class="ph ph-file text-xl"></i>
+        <span>Relatórios</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <main class="flex-1 p-10">
+    <div class="max-w-2xl mx-auto bg-white border border-gray-300 p-8 rounded-xl shadow-md fade-in">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <i class="ph ph-file-arrow-down text-2xl text-black"></i>
+        Relatório Geral do Sistema
+      </h2>
+
+      <p class="mb-6 text-gray-700">
+        Baixe uma planilha xlsx com todos os dados registrados no GTA System.
+      </p>
+
+      <a href="{{ url_for('baixar_relatorio') }}"
+         class="block w-full text-center bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-all font-semibold">
+        <i class="ph ph-download-simple mr-2"></i> Baixar Relatório Excel
+      </a>
+    </div>
+  </main>
+</body>
+</html>
