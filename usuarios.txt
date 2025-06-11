@@ -1,2 +1,4 @@
 comercial@acessarequipamentos.com.br,3022,Joice Jaqueline,usuario
 thalis@acessar.com.br,3022,Thalis Paschoal,usuario
+suporte@acessar.com.br,3022,Thalis Paschoal,administrador
+

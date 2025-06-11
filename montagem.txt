@@ -1,6 +1,0 @@
-BALL - EDERSON,BALL,TORRE DE RESFRIAMENTO,2025-06-07,Tubo 1.00m - 3.64kg x 6 | Total de peças: 24 | Peso total: 21.84 kg
-UNILEVER,OBRA TESTE,LOCAL TESTE,2008-02-03,arthur,Tubo 0.50m - 1.82kg x 30 | Total de peças: 30 | Peso total: 54.60 kg
-UNILEVER,OBRA TESTE,LOCAL TESTE,2025-05-20,RESPONSAVEL TESTE,Total de peças: 0 | Peso total: 0.00 kg
-BALL - EDERSON,ACESSAR,LOCAL TESTE,2026-05-20,ARTHUR,Tubo 0.50m - 1.82kg x 20 | acessorios 0.75m - 8.25kg x 30 | Diversos: DEGRAUS | Total de peças: 80 | Peso total: 283.90 kg
-BALL - EDERSON,OBRA TESTE,ESCRITÓRIO,2025-05-30,JOSÉ AUGUSTO,Tubo 0.50m - 1.82kg x 30 | Pranchão 0.75m - 8.25kg x 30 | acessorios 0.75m - 8.25kg x 30 | Diversos: MARTELO | Total de peças: 90 | Peso total: 549.60 kg
-UNILEVER,OBRA TESTE,LOCAL TESTE,2025-06-20,THIAGO,Tubo 0.50m - 1.82kg x 10 | Tubo 0.75m - 2.74kg x 20 | Pranchão 0.75m - 8.25kg x 30 | Pranchão 1.00m - 11.00kg x 30 | acessorios 0.75m - 8.25kg x 40 | acessorios 1.00m - 11.00kg x 50 | Diversos: martelo e escada | Total de peças: 230 | Peso total: 1530.50 kg
